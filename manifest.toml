@@ -1,0 +1,258 @@
+id = "csharp-syntax"
+name = "C#"
+version = "0.0.1"
+abi = "1.12"
+# A language and nothing else: no module of its own and no pane. The grammar is the file the
+# installer downloads and checks.
+
+[language]
+name = "C#"
+grammar = "csharp.wasm"
+extensions = ["cs", "csx"]
+comment = "//"
+grammar_name = "c_sharp"
+# The query is the grammar's own (queries/highlights.scm of https://github.com/tree-sitter/tree-sitter-c-sharp, v0.24.0 (d4bbe18)).
+# The patterns are in the opposite order of the grammar's file: TerminalCode takes the first of two
+# patterns on the same text, and that file is written for the last (as Neovim and Zed take it).
+highlights = '''
+;; Method calls
+
+(invocation_expression (member_access_expression name: (identifier) @function))
+
+;; Type constraints
+
+(type_parameter_constraints_clause (identifier) @property.definition)
+
+;; Parameters
+
+(parameter
+  name: (identifier) @variable.parameter)
+
+;; Attribute
+
+(attribute name: (identifier) @attribute)
+
+(directive_value) @string
+
+(directive_separator) @punctuation.delimiter
+
+(directive_name) @variable
+
+(directive_kind) @keyword
+
+(ignored_directive "#:" @keyword)
+
+;; File-based app directives (#!, #:package Name@Version, #:property Name=Value, ...)
+
+(shebang_directive) @keyword
+
+[
+  "add"
+  "alias"
+  "as"
+  "base"
+  "break"
+  "case"
+  "catch"
+  "checked"
+  "class"
+  "continue"
+  "default"
+  "delegate"
+  "do"
+  "else"
+  "enum"
+  "event"
+  "explicit"
+  "extern"
+  "finally"
+  "for"
+  "foreach"
+  "global"
+  "goto"
+  "if"
+  "implicit"
+  "interface"
+  "is"
+  "lock"
+  "namespace"
+  "notnull"
+  "operator"
+  "params"
+  "return"
+  "remove"
+  "sizeof"
+  "stackalloc"
+  "static"
+  "struct"
+  "switch"
+  "throw"
+  "try"
+  "typeof"
+  "unchecked"
+  "using"
+  "while"
+  "new"
+  "await"
+  "in"
+  "yield"
+  "get"
+  "set"
+  "when"
+  "out"
+  "ref"
+  "from"
+  "where"
+  "select"
+  "record"
+  "init"
+  "with"
+  "let"
+  "unsafe"
+] @keyword
+
+;; Keywords
+
+[
+  (modifier)
+  "this"
+  (implicit_type)
+] @keyword
+
+[
+  "("
+  ")"
+  "["
+  "]"
+  "{"
+  "}"
+  (interpolation_brace)
+]  @punctuation.bracket
+
+[
+  "--"
+  "-"
+  "-="
+  "&"
+  "&="
+  "&&"
+  "+"
+  "++"
+  "+="
+  "<"
+  "<="
+  "<<"
+  "<<="
+  "="
+  "=="
+  "!"
+  "!="
+  "=>"
+  ">"
+  ">="
+  ">>"
+  ">>="
+  ">>>"
+  ">>>="
+  "|"
+  "|="
+  "||"
+  "?"
+  "??"
+  "??="
+  "^"
+  "^="
+  "~"
+  "*"
+  "*="
+  "/"
+  "/="
+  "%"
+  "%="
+  ":"
+  ".."
+] @operator
+
+;; Tokens
+
+[
+  ";"
+  "."
+  ","
+] @punctuation.delimiter
+
+;; Comments
+
+(comment) @comment
+
+[
+  (boolean_literal)
+  (null_literal)
+] @constant.builtin
+
+(escape_sequence) @string.escape
+
+[
+  (character_literal)
+  (string_literal)
+  (raw_string_literal)
+  (verbatim_string_literal)
+  (interpolated_string_expression)
+  (interpolation_start)
+  (interpolation_quote)
+ ] @string
+
+;; Literals
+
+[
+  (real_literal)
+  (integer_literal)
+] @number
+
+;; Enum
+(enum_member_declaration (identifier) @property.definition)
+
+(predefined_type) @type.builtin
+
+(base_list (identifier) @type)
+
+(_ type: (identifier) @type)
+
+(destructor_declaration name: (identifier) @constructor)
+
+(constructor_declaration name: (identifier) @constructor)
+
+(is_expression right: (identifier) @type)
+
+(as_expression right: (identifier) @type)
+
+(type_argument_list (identifier) @type)
+
+(parameter type: (identifier) @type)
+
+(type_parameter (identifier) @property.definition)
+
+(generic_name (identifier) @type)
+
+(namespace_declaration name: (identifier) @module)
+
+(record_declaration (identifier) @type)
+
+(struct_declaration (identifier) @type)
+
+(enum_declaration name: (identifier) @type)
+
+(class_declaration name: (identifier) @type)
+
+;; Types
+
+(interface_declaration name: (identifier) @type)
+
+(local_function_statement name: (identifier) @function)
+
+;; Methods
+
+(method_declaration name: (identifier) @function)
+
+(identifier) @variable
+'''
